@@ -1,7 +1,7 @@
 import React from "react";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
-import Nav from "./Nav";
+import PrivateNav from "./PrivateNav";
 
 class FriendsList extends React.Component {
   state = {
@@ -11,7 +11,8 @@ class FriendsList extends React.Component {
       age: "",
       email: "",
       id: Date.now()
-    }
+    },
+    isLoggedIn: true
   };
 
   fetchFriends = () => {
@@ -63,7 +64,7 @@ class FriendsList extends React.Component {
   render() {
     return (
       <>
-        <Nav />
+        <PrivateNav />
         <form onSubmit={this.addNewFriend}>
           <input
             type="text"
