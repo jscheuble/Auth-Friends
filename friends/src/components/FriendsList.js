@@ -41,7 +41,6 @@ class FriendsList extends React.Component {
       .post("/api/friends", this.state.addFriend)
       .then(res => {
         this.setState({ friends: res.data });
-        console.log(this.state.friends);
       })
       .catch(err => console.log(err));
   };
@@ -54,7 +53,6 @@ class FriendsList extends React.Component {
         this.setState({
           friends: res.data.filter(friend => friend.id !== id)
         });
-        console.log(this.state.friends);
       });
   };
 
