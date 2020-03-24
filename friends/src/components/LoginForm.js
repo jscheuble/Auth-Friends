@@ -1,4 +1,6 @@
 import React from "react";
+
+import Nav from "./Nav";
 import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 class LoginForm extends React.Component {
@@ -24,28 +26,32 @@ class LoginForm extends React.Component {
       .post("/api/login", this.state.userInfo)
       .then(res => {
         window.localStorage.setItem("token", JSON.stringify(res.data.payload));
-        //this.props.history.push('/')
+        this.props.history.push("/private");
       })
       .catch(err => console.log(err));
   };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          value={this.state.userInfo.username}
-          onChange={this.handleChange}
-        />
-        <input
-          type="text"
-          name="password"
-          value={this.state.userInfo.password}
-          onChange={this.handleChange}
-        />
-        <button>Login</button>
-      </form>
+      <div>
+        <Nav />
+        <h1>Welcome</h1>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            type="text"
+            name="username"
+            value={this.state.userInfo.username}
+            onChange={this.handleChange}
+          />
+          <input
+            type="text"
+            name="password"
+            value={this.state.userInfo.password}
+            onChange={this.handleChange}
+          />
+          <button>Login</button>
+        </form>
+      </div>
     );
   }
 }
