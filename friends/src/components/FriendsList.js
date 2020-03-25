@@ -12,7 +12,8 @@ class FriendsList extends React.Component {
       email: "",
       id: Date.now()
     },
-    isLoggedIn: true
+    isEditing: false,
+    editId: ""
   };
 
   fetchFriends = () => {
@@ -57,6 +58,25 @@ class FriendsList extends React.Component {
       });
   };
 
+  toggleEditing = (e, id) => {
+    e.preventDefault();
+    this.setState({
+      isEditing: true,
+      editId: id
+    });
+  };
+
+  editFriend = id => {
+    axiosWithAuth()
+      .put(`/api/friends/:${id}`, this.state.addFriend)
+      .then(res =>
+        this.setState({
+          friends: res.data
+        })
+      )
+      .catch(err => console.log(err));
+  };
+
   componentDidMount() {
     this.fetchFriends();
   }
@@ -65,7 +85,14 @@ class FriendsList extends React.Component {
     return (
       <>
         <PrivateNav />
-        <form onSubmit={this.addNewFriend}>
+        <form
+          className="friend-form"
+          onSubmit={
+            this.state.isEditing
+              ? this.editFriend(this.state.editId)
+              : this.addNewFriend
+          }
+        >
           <input
             type="text"
             name="name"
@@ -84,15 +111,23 @@ class FriendsList extends React.Component {
             placeholder="e-mail"
             onChange={this.handleChange}
           />
-          <button type="submit">add new friend</button>
+          <button className="main-btn" type="submit">
+            add new friend
+          </button>
         </form>
-        <div>
+        <div className="friend-container">
           {this.state.friends.map(friend => {
             return (
               <div className="friend" key={friend.id}>
                 <p>Name: {friend.name}</p>
                 <p>Age: {friend.age}</p>
                 <p>Email: {friend.email}</p>
+                <button
+                  onClick={e => this.toggleEditing(e, friend.id)}
+                  className="x"
+                >
+                  edit
+                </button>
                 <button
                   className="x"
                   onClick={e => this.deleteFriend(e, friend.id)}
