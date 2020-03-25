@@ -10,7 +10,7 @@ class FriendsList extends React.Component {
       name: "",
       age: "",
       email: "",
-      id: Date.now()
+      id: 0
     },
     isEditing: false,
     editId: ""
@@ -39,6 +39,12 @@ class FriendsList extends React.Component {
 
   addNewFriend = e => {
     e.preventDefault();
+    this.setState({
+      addFriend: {
+        ...this.state.addFriend,
+        id: Date.now()
+      }
+    });
     axiosWithAuth()
       .post("/api/friends", this.state.addFriend)
       .then(res => {
